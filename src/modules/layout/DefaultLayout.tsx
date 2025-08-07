@@ -4,7 +4,7 @@ export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <GNB />
-      <main className="pt-16">{children}</main>
+      <main className="max-w-6xl mx-auto pt-16">{children}</main>
     </div>
   );
 };
