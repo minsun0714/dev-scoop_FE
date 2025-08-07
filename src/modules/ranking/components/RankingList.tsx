@@ -36,12 +36,14 @@ export const RankingList = () => {
 
   // 헤더 부분은 항상 렌더링
   const renderHeader = () => (
-    <div className="flex items-center justify-between mb-6">
-      <h2 className="text-2xl font-bold">인기 키워드 랭킹</h2>
-      <WebsiteSelector
-        value={selectedWebsite}
-        onValueChange={handleWebsiteChange}
-      />
+    <div className="mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold">인기 키워드 랭킹</h2>
+        <WebsiteSelector
+          value={selectedWebsite}
+          onValueChange={handleWebsiteChange}
+        />
+      </div>
     </div>
   );
 
@@ -73,7 +75,7 @@ export const RankingList = () => {
       );
     }
 
-    return <RankingTable ranking={ranking} />;
+    return <RankingTable ranking={ranking} selectedSource={selectedWebsite} />;
   };
 
   return (
