@@ -111,20 +111,46 @@ export default function SearchPage() {
               ) : (
                 <>
                   <div className="space-y-4">
-                    {searchData.content.map((item) => (
-                      <div
-                        key={item.id}
-                        className="p-4 bg-white rounded-lg shadow border"
-                      >
-                        <h3 className="text-lg font-semibold mb-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-600 mb-2">{item.content}</p>
-                        <div className="text-sm text-gray-500">
-                          {item.author} • {item.publishedAt} • {item.source}
+                    {searchData.content.map((item) => {
+                      // UTC를 KST로 변환 (UTC+9)
+                      const utcDate = new Date(item.createdAt);
+                      const kstDate = new Date(
+                        utcDate.getTime() + 9 * 60 * 60 * 1000
+                      );
+                      const formattedDate = kstDate
+                        .toISOString()
+                        .split("T")[0]
+                        .replace(/-/g, ".");
+
+                      const handleCardClick = () => {
+                        const searchQuery = encodeURIComponent(item.title);
+                        window.open(
+                          `https://www.google.com/search?q=${searchQuery}`,
+                          "_blank"
+                        );
+                      };
+
+                      return (
+                        <div
+                          key={item.id}
+                          className="p-4 bg-white rounded-lg shadow border relative transition-all duration-200 hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                          onClick={handleCardClick}
+                        >
+                          <h3 className="text-lg font-semibold mb-2">
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 mb-2">{item.content}</p>
+                          <div className="flex justify-between items-center">
+                            <div className="text-sm text-gray-500">
+                              {item.source}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {formattedDate}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {/* Pagination */}

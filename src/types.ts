@@ -24,6 +24,7 @@ export interface SearchResultItem {
   content: string;
   author: string;
   publishedAt: string;
+  createdAt: string;
   source: string;
   url: string;
   keywords: string[];
