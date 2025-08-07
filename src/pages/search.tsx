@@ -6,6 +6,7 @@ import { SearchSection } from "@/modules/ranking/components/SearchSection";
 import { SearchWebsite } from "@/modules/ranking/components/SearchWebsiteSelector";
 import { SearchParams } from "@/types";
 import { useSearch } from "@/modules/search/hooks/useSearch";
+import { Pagination } from "@/modules/search/components/Pagination";
 
 export default function SearchPage() {
   const router = useRouter();
@@ -51,6 +52,22 @@ export default function SearchPage() {
     });
   };
 
+  // 페이지 변경
+  const handlePageChange = (page: number) => {
+    router.push({
+      pathname: "/search",
+      query: {
+        ...router.query,
+        page: page,
+      },
+    });
+  };
+
+  // 총 페이지 수 계산
+  const totalPages = searchData
+    ? Math.ceil(searchData.total / searchParams.size)
+    : 0;
+
   return (
     <DefaultLayout>
       <Box>
@@ -92,22 +109,31 @@ export default function SearchPage() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {searchData.content.map((item) => (
-                    <div
-                      key={item.id}
-                      className="p-4 bg-white rounded-lg shadow border"
-                    >
-                      <h3 className="text-lg font-semibold mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 mb-2">{item.content}</p>
-                      <div className="text-sm text-gray-500">
-                        {item.author} • {item.publishedAt} • {item.source}
+                <>
+                  <div className="space-y-4">
+                    {searchData.content.map((item) => (
+                      <div
+                        key={item.id}
+                        className="p-4 bg-white rounded-lg shadow border"
+                      >
+                        <h3 className="text-lg font-semibold mb-2">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-600 mb-2">{item.content}</p>
+                        <div className="text-sm text-gray-500">
+                          {item.author} • {item.publishedAt} • {item.source}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  <Pagination
+                    currentPage={searchParams.page}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                </>
               )}
             </div>
           )}
