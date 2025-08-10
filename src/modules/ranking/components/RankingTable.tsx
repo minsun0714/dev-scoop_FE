@@ -6,9 +6,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { RankingResponse } from "@/types";
 import { useRouter } from "next/router";
 import { Website } from "./WebsiteSelector";
+
+// Badge 컬러맵 정의
+const badgeColorMap = {
+  Spike: "bg-red-100 text-red-800 border-red-200",
+  New: "bg-green-100 text-green-800 border-green-200",
+  Rising: "bg-blue-100 text-blue-800 border-blue-200",
+} as const;
 
 interface RankingTableProps {
   ranking: RankingResponse;
@@ -20,12 +28,6 @@ export const RankingTable = ({
   selectedSource,
 }: RankingTableProps) => {
   const router = useRouter();
-
-  // 증가율 계산 함수
-  const calculateGrowthRate = (todayCount: number, yesterdayCount: number) => {
-    const growthRate = ((todayCount - yesterdayCount) / todayCount) * 100;
-    return growthRate.toFixed(0) + "%";
-  };
 
   // 키워드 클릭 시 검색 페이지로 이동
   const handleKeywordClick = (keyword: string) => {
@@ -47,7 +49,7 @@ export const RankingTable = ({
           <TableRow>
             <TableHead className="w-[100px]">Rank</TableHead>
             <TableHead>Keyword</TableHead>
-            <TableHead className="w-[120px]">증가율</TableHead>
+            <TableHead className="w-[120px]">Badge</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -62,7 +64,11 @@ export const RankingTable = ({
                 {item.keyword}
               </TableCell>
               <TableCell>
-                {calculateGrowthRate(item.todayCount, item.yesterdayCount)}
+                <Badge
+                  className={badgeColorMap[item.badge] || badgeColorMap.Spike}
+                >
+                  {item.badge}
+                </Badge>
               </TableCell>
             </TableRow>
           ))}

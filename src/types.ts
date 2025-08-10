@@ -4,6 +4,7 @@ export interface RankingItem {
   todayCount: number;
   yesterdayCount: number;
   score: number;
+  badge: "Spike" | "New" | "Rising";
 }
 
 // 랭킹 응답 타입
