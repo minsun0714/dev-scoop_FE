@@ -17,8 +17,6 @@ export default function SearchPage() {
   useEffect(() => {
     const keyword = router.query.keyword as string;
     const source = router.query.source as SearchWebsite;
-    const size = parseInt(router.query.size as string) || 10;
-    const page = parseInt(router.query.page as string) || 1;
 
     if (keyword) setSearchKeyword(keyword);
     if (source && ["all", "reddit", "hackernews", "devto"].includes(source)) {
@@ -123,11 +121,7 @@ export default function SearchPage() {
                         .replace(/-/g, ".");
 
                       const handleCardClick = () => {
-                        const searchQuery = encodeURIComponent(item.title);
-                        window.open(
-                          `https://www.google.com/search?q=${searchQuery}`,
-                          "_blank"
-                        );
+                        window.open(item.url, "_blank");
                       };
 
                       return (
